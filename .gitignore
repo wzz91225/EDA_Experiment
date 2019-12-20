@@ -4,7 +4,7 @@
 !/*/module
 !*.v
 !/*/ip
-!/*/ip/*
+!/*/ip/**
 !/*/simulation
 !/*/simulation/modelsim
 !*.vt

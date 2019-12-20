@@ -109,7 +109,7 @@ module VGA_TIMING_8b(
     // V Control
     //---------------------------------------------------------------------
 	always @(negedge VGA_HSYNC or negedge VGA_RST_N) begin
-		if (!VGA_RST_N) begin
+		if (VGA_RST_N == 1'b0) begin
 			r_Vcount		<= 10'd0;
 			r_VGA_VSYNC		<= 1'b1;
 		end else begin
@@ -148,7 +148,7 @@ module VGA_TIMING_8b(
     // H Control
     //---------------------------------------------------------------------
 	always @(posedge VGA_CLK or negedge VGA_RST_N) begin
-		if (!VGA_RST_N) begin
+		if (VGA_RST_N == 1'b0) begin
 			r_Hcount		<= 0;
 
 			r_VGA_HSYNC		<= 1'b1;

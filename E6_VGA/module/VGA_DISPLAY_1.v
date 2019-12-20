@@ -71,7 +71,7 @@ module VGA_DISPLAY_1 (
 
 
 	always @(posedge VGA_CLK or negedge RST_N) begin
-		if (!RST_N) begin
+		if (RST_N == 1'b0) begin
 			r_VGA_BUF_RGB	<= 24'hff_ff_ff;
 			r_rgb1			<= 24'hff_00_00;
 			r_rgb2			<= 24'hff_00_00;
@@ -127,7 +127,7 @@ module VGA_DISPLAY_1 (
 
 
 	always @(posedge VGA_CLK or negedge RST_N) begin
-		if (!RST_N) begin
+		if (RST_N == 1'b0) begin
 			r_color_cnt	<= 24'd0;
 			r_rgb		<= 24'hff_00_00;
 		end else begin

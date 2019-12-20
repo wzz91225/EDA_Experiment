@@ -53,8 +53,11 @@ module VGA_DISPLAY(
 	reg				[10:0]		r_Y						;
 
 	wire			[23:0]		w_VGA_BUF_RGB_0			;
+
 	wire			[23:0]		w_VGA_BUF_RGB_1			;
-	// wire			[23:0]		w_VGA_BUF_RGB_2			;
+
+	wire						w_DISPLAY_2_ENABLE		;
+	wire			[23:0]		w_VGA_BUF_RGB_2			;
 
 // =============================================================================
 // RTL Body
@@ -63,8 +66,8 @@ module VGA_DISPLAY(
 	assign						w_X						= r_X				;
 	assign						w_Y						= r_Y				;
 
-	assign						VGA_BUF_RGB				= w_VGA_BUF_RGB_1	;
 
+	assign						VGA_BUF_RGB				= ((w_DISPLAY_2_ENABLE) ? (w_VGA_BUF_RGB_2) : (w_VGA_BUF_RGB_1))	;
 
 
 	assign						w_VGA_BUF_RGB_0			= 24'hff_ff_ff		;
@@ -80,6 +83,18 @@ module VGA_DISPLAY(
 		.CURRENT_X				( w_X					), // (i)
 		.CURRENT_Y				( w_Y					), // (i)
 		.VGA_BUF_RGB			( w_VGA_BUF_RGB_1		)  // (o) 
+	);
+
+
+
+	VGA_DISPLAY_2 VGA_DISPLAY_2_inst (
+		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
+		.RST_N					( RST_N					), // (i) reset, High Active
+		.VGA_IF_RGBEN_1			( w_VGA_IF_RGBEN_1		), // (i) 
+		.CURRENT_X				( w_X					), // (i)
+		.CURRENT_Y				( w_Y					), // (i)
+		.ENABLE					( w_DISPLAY_2_ENABLE	), // (o)
+		.VGA_BUF_RGB			( w_VGA_BUF_RGB_2		)  // (o) 
 	);
 
 

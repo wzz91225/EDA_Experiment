@@ -2,6 +2,7 @@ module E6_VGA (
 	input						RST_N					, // (i)
 	input						CLK						, // (i)
 
+
 	output						VGA_CLK					, // (o)
 	output						VGA_HSYNC				, // (o) VGA Horizontal SYNC
 	output						VGA_VSYNC				, // (o) VGA Vertical SYNC
@@ -9,7 +10,25 @@ module E6_VGA (
 	output			[ 7:0]		VGA_G					, // (o) VGA Green
 	output			[ 7:0]		VGA_B					, // (o) VGA Blue
 	output						VGA_SYNC_N				, // (o) 0
-	output						VGA_BLANK_N				  // (o) 1
+	output						VGA_BLANK_N				, // (o) 1
+
+
+	input						k						, // alarm
+	input						k1						, // alarm_en
+	input						k2						, // stopwatch
+
+	input						remin					,
+	input						rehour					,
+
+	input						key1_N					, // up		/ pause
+	input						key2_N					, // down	/ reset
+
+	input			[ 1:0]		fast					,
+
+	output						LED_hourly				,
+	output						LED_alarm				,
+	
+	output			[41:0]		DigitalTube_out			
 );
 
 
@@ -18,12 +37,14 @@ module E6_VGA (
 	wire						w_CLK_200M				;
 	wire						w_CLK_65M				;
 
-	wire						w_VGA_IF_RGBEN			;
-	wire			[23:0]		w_VGA_BUF_RGB			;
 
 
+	wire						s_clk_1kHz			;
+	// wire						s_clk_key			;
 
-	assign						VGA_CLK					= w_CLK_65M;
+	wire			[ 2:0]		s_DTube_en			;
+	wire			[ 2:0]		s_Twinkle_en		;
+	wire			[23:0]		s_number_BCD		;
 
 
 
@@ -43,30 +64,51 @@ module E6_VGA (
 	);
 
 
-	VGA_TIMING_8b VGA_TIMING_8b_inst(
-		.VGA_CLK				( w_CLK_65M				), // (i) 65M clock
-		.VGA_RST_N				( RST_N					), // (i) reset, High Active
 
-		.VGA_HSYNC				( VGA_HSYNC				), // (o) HSYNC signal
-		.VGA_VSYNC				( VGA_VSYNC				), // (o) VSYNC signal
-		.VGA_R					( VGA_R					), // (o) Red signal
-		.VGA_G					( VGA_G					), // (o) Green signal
-		.VGA_B					( VGA_B					), // (o) Blue signal
-		.VGA_SYNC_N				( VGA_SYNC_N			), // (o) 0
-		.VGA_BLANK_N			( VGA_BLANK_N			), // (o) 1
-
-		.VGA_DE					( 						), // (o) DE signal
-		.VGA_IF_RGBEN			( w_VGA_IF_RGBEN		), // (o) if RGB enable
-		.VGA_BUF_RGB			( w_VGA_BUF_RGB			)  // (i) buffer RGB
+	ClockDivider ClockDivider_inst (
+		.clkin					( CLK					),
+		.rst_N					( RST_N					),
+		.fast					( fast					),
+		.clkout					( s_clk_1kHz			),
+		// .clkkey					( s_clk_key				)
 	);
 
 
+	DigitalClock_Drive DigitalClock_Drive_inst (
+		.clk					( CLK					),
+		.rst_N					( RST_N					),
+		.DTube_en				( s_DTube_en			),
+		.Twinkle_en				( s_Twinkle_en			),
+		.number_BCD				( s_number_BCD			),
+		.Dtube_out				( DigitalTube_out		),
+		.VGA_CLK_IN				( w_CLK_65M				),
+		.VGA_CLK_OUT			( VGA_CLK				),
+		.VGA_HSYNC				( VGA_HSYNC				),
+		.VGA_VSYNC				( VGA_VSYNC				),
+		.VGA_R					( VGA_R					),
+		.VGA_G					( VGA_G					),
+		.VGA_B					( VGA_B					),
+		.VGA_SYNC_N				( VGA_SYNC_N			),
+		.VGA_BLANK_N			( VGA_BLANK_N			),
+	);
 
-	VGA_DISPLAY VGA_DISPLAY_inst(
-		.VGA_CLK				( w_CLK_65M				), // (i) vga clk in
-		.RST_N					( RST_N					), // (i) reset, High Active
-		.VGA_IF_RGBEN			( w_VGA_IF_RGBEN		), // (i) 
-		.VGA_BUF_RGB			( w_VGA_BUF_RGB			)  // (o) out
+
+	DigitalClock_Logic DigitalClock_Logic_inst (
+		.clk					( s_clk_1kHz			),
+		// .clkkey					( s_clk_key				),
+		.rst_N					( RST_N					),
+		.alarm					( k						),
+		.alarm_en				( k1					),
+		.stopwatch				( k2					),
+		.remin					( remin					),
+		.rehour					( rehour				),
+		.key1_N					( key1_N				),
+		.key2_N					( key2_N				),
+		.DTube_en				( s_DTube_en			),
+		.Twinkle_en				( s_Twinkle_en			),
+		.number_BCD				( s_number_BCD			),
+		.LED_hourly				( LED_hourly			),
+		.LED_alarm				( LED_alarm				)
 	);
 
 

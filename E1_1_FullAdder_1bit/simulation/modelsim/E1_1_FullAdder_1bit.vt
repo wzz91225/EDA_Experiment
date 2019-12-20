@@ -1,0 +1,87 @@
+// Copyright (C) 2018  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "10/17/2019 22:36:30"
+                                                                                
+// Verilog Test Bench template for design : E1_1_FullAdder_1bit
+// 
+// Simulation tool : ModelSim-Altera (Verilog)
+// 
+
+`timescale 1 ps/ 1 ps
+module E1_1_FullAdder_1bit_vlg_tst();
+// constants                                           
+// general purpose registers
+// reg eachvec;
+// test vector input registers
+reg ain;
+reg bin;
+reg cin;
+// wires
+wire cout;
+wire sout;
+
+integer i;
+
+// assign statements (if any)                          
+E1_1_FullAdder_1bit i1 (
+// port map - connection between master ports and signals/registers   
+	.ain(ain),
+	.bin(bin),
+	.cin(cin),
+	.cout(cout),
+	.sout(sout)
+);
+initial
+begin
+// code that executes only once                        
+// insert code here --> begin                          
+
+	ain = 1 'b0;
+	bin = 1 'b0;
+	cin = 1 'b0;
+
+	#1000
+	ain = 1 'b1;
+	bin = 1 'b1;
+	cin = 1 'b1;
+
+	for (i = 0; i < 8; i = i + 1)
+	begin
+		#1000
+		ain = (i & 1) ? 1 'b1 : 1 'b0;
+		bin = (i & 2) ? 1 'b1 : 1 'b0;
+		cin = (i & 4) ? 1 'b1 : 1 'b0;
+	end
+                                                       
+// --> end
+// $display("Running testbench");
+end                                                    
+// always
+// // optional sensitivity list                           
+// // @(event1 or event2 or .... eventn)                  
+// begin
+// // code executes for every event on sensitivity list   
+// // insert code here --> begin                          
+                                                       
+// @eachvec;                                              
+// // --> end                                             
+// end
+endmodule
+

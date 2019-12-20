@@ -1,0 +1,210 @@
+// Copyright (C) 2018  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "12/05/2019 17:21:20"
+                                                                                
+// Verilog Test Bench template for design : E5_DigitalClock
+// 
+// Simulation tool : ModelSim-Altera (Verilog)
+// 
+
+`timescale 1 ns/ 1 ns
+module E5_DigitalClock_vlg_tst();
+// constants                                           
+// general purpose registers
+// reg eachvec;
+// test vector input registers
+reg clk;
+reg [1:0] fast;
+reg k;
+reg k1;
+reg k2;
+reg key1_N;
+reg key2_N;
+reg rehour;
+reg remin;
+reg rst_N;
+// wires                                               
+wire [41:0]  DigitalTube_out;
+wire LED_alarm;
+wire LED_hourly;
+
+// assign statements (if any)                          
+E5_DigitalClock i1 (
+// port map - connection between master ports and signals/registers   
+	.DigitalTube_out(DigitalTube_out),
+	.LED_alarm(LED_alarm),
+	.LED_hourly(LED_hourly),
+	.clk(clk),
+	.fast(fast),
+	.k(k),
+	.k1(k1),
+	.k2(k2),
+	.key1_N(key1_N),
+	.key2_N(key2_N),
+	.rehour(rehour),
+	.remin(remin),
+	.rst_N(rst_N)
+);
+initial                                                
+begin
+
+	clk		<= 1'd0;
+	fast	<= 2'd2;
+	k		<= 1'd0;
+	k1		<= 1'd1;
+	k2		<= 1'd0;
+	key1_N	<= 1'd1;
+	key2_N	<= 1'd1;
+	rehour	<= 1'd0;
+	remin	<= 1'd0;
+	rst_N	<= 1'd0;
+
+	#10
+	rst_N	<= 1'd1;
+	                                     
+	$display("Running testbench");                       
+end
+
+always #1
+begin
+	clk <= ~clk;
+end
+
+
+reg [99:0] us = 0;
+
+always #1000
+begin
+	us	<= us + 1;
+end
+
+
+always #1
+begin
+	if (us == 105) begin
+		remin	<= 1'd1;
+		key2_N	<= 1'd0;
+	end
+	if (us == 130) begin
+		remin	<= 1'd1;
+		key1_N	<= 1'd0;
+		key2_N	<= 1'd1;
+	end
+	if (us == 155) begin
+		remin	<= 1'd0;
+		key1_N	<= 1'd1;
+		key2_N	<= 1'd1;
+	end
+
+	if (us == 160) begin
+		rehour	<= 1'd1;
+		key1_N	<= 1'd1;
+		key2_N	<= 1'd0;
+	end
+	if (us == 185) begin
+		rehour	<= 1'd1;
+		key1_N	<= 1'd0;
+		key2_N	<= 1'd1;
+	end
+	if (us == 210) begin
+		rehour	<= 1'd0;
+		key1_N	<= 1'd1;
+		key2_N	<= 1'd1;
+	end
+
+	// 调闹钟
+	if (us == 300) begin
+		k		<= 1'd1;
+		remin	<= 1'd1;
+		key1_N	<= 1'd1;
+		key2_N	<= 1'd0;
+	end
+	if (us == 310) begin
+		k		<= 1'd1;
+		remin	<= 1'd0;
+		rehour	<= 1'd1;
+		key1_N	<= 1'd0;
+		key2_N	<= 1'd1;
+	end
+	if (us == 360) begin
+		k		<= 1'd0;
+		remin	<= 1'd0;
+		rehour	<= 1'd0;
+		key1_N	<= 1'd1;
+		key2_N	<= 1'd1;
+	end
+
+	if(us == 400) begin
+		remin	<= 1'd1;
+		rehour	<= 1'd0;
+		key1_N	<= 1'd1;
+		key2_N	<= 1'd0;
+	end
+	if(us == 410) begin
+		remin	<= 1'd0;
+		rehour	<= 1'd1;
+		key1_N	<= 1'd0;
+		key2_N	<= 1'd1;
+	end
+	if(us == 460) begin
+		remin	<= 1'd0;
+		rehour	<= 1'd0;
+		key1_N	<= 1'd1;
+		key2_N	<= 1'd1;
+	end
+
+	if (us == 2000) begin
+		k2		<= 1'd1;
+	end
+
+	if (us == 2100) begin
+		k2		<= 1'd1;
+		key1_N	<= 1'd0;
+		key2_N	<= 1'd1;
+	end
+
+	if (us == 2600) begin
+		k2		<= 1'd1;
+		key1_N	<= 1'd1;
+		key2_N	<= 1'd1;
+	end
+
+	if (us == 2650) begin
+		k2		<= 1'd1;
+		key1_N	<= 1'd0;
+		key2_N	<= 1'd1;
+	end
+
+	if (us == 3000) begin
+		k2		<= 1'd1;
+		key1_N	<= 1'd1;
+		key2_N	<= 1'd0;
+	end
+
+	if (us == 3010) begin
+		k2		<= 1'd1;
+		key1_N	<= 1'd0;
+		key2_N	<= 1'd1;
+	end
+end
+
+
+endmodule
+

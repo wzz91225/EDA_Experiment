@@ -1,0 +1,92 @@
+// Copyright (C) 2018  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "11/13/2019 11:38:43"
+                                                                                
+// Verilog Test Bench template for design : E4_TrafficLights
+// 
+// Simulation tool : ModelSim-Altera (Verilog)
+// 
+
+`timescale 1 ps/ 1 ps
+module E4_TrafficLights_vlg_tst();
+// constants                                           
+// general purpose registers
+// reg eachvec;
+// test vector input registers
+reg clk;
+reg rst_N;
+reg s;
+// wires                                               
+wire [13:0]  digital_tube_0;
+wire [13:0]  digital_tube_1;
+wire [2:0]  ryg0;
+wire [2:0]  ryg1;
+
+integer		i;
+
+
+// assign statements (if any)                          
+E4_TrafficLights i1 (
+// port map - connection between master ports and signals/registers   
+	.clk(clk),
+	.digital_tube_0(digital_tube_0),
+	.digital_tube_1(digital_tube_1),
+	.rst_N(rst_N),
+	.ryg0(ryg0),
+	.ryg1(ryg1),
+	.s(s)
+);
+initial                                                
+begin                                                  
+// code that executes only once                        
+// insert code here --> begin                          
+	rst_N = 0;
+	s = 0;
+	clk = 0;
+	i = 0;
+
+	#100
+	rst_N = 1;
+	#10000
+// --> end                                             
+$display("Running testbench");                       
+end        
+
+always #10 clk = ~clk;
+
+
+
+always #1000 begin
+	i = i + 1;
+	if (i == 2)		s = 1;
+	if (i == 3)		s = 0;
+
+	if (i == 70)		s = 1;
+	if (i == 76)		s = 0;
+
+	if (i == 96)		s = 1;
+	if (i == 102)		s = 0;
+
+	if (i == 105)		s = 1;
+	if (i == 148)		s = 0;
+end
+
+endmodule
+

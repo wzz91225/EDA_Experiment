@@ -1,0 +1,5 @@
+*
+!/E[0-9]_*/
+!/E[0-9]_*/module
+!/E[0-9]_*/module/*.v
+!.gitignore

@@ -2,13 +2,14 @@ module E6_VGA (
 	input						RST_N					, // (i)
 	input						CLK						, // (i)
 
+	output						VGA_CLK					, // (o)
 	output						VGA_HSYNC				, // (o) VGA Horizontal SYNC
 	output						VGA_VSYNC				, // (o) VGA Vertical SYNC
 	output			[ 7:0]		VGA_R					, // (o) VGA Red
 	output			[ 7:0]		VGA_G					, // (o) VGA Green
 	output			[ 7:0]		VGA_B					, // (o) VGA Blue
 	output						VGA_SYNC_N				, // (o) 0
-	output						VGA_BLANK_N				, // (o) 1
+	output						VGA_BLANK_N				  // (o) 1
 );
 
 
@@ -16,6 +17,10 @@ module E6_VGA (
 	wire						w_CLK_100M				;
 	wire						w_CLK_200M				;
 	wire						w_CLK_65M				;
+
+
+
+	assign						VGA_CLK					= w_CLK_65M;
 
 
 

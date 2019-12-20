@@ -18,6 +18,9 @@ module E6_VGA (
 	wire						w_CLK_200M				;
 	wire						w_CLK_65M				;
 
+	wire						w_VGA_IF_RGBEN			;
+	wire			[23:0]		w_VGA_BUF_RGB			;
+
 
 
 	assign						VGA_CLK					= w_CLK_65M;
@@ -53,8 +56,17 @@ module E6_VGA (
 		.VGA_BLANK_N			( VGA_BLANK_N			), // (o) 1
 
 		.VGA_DE					( 						), // (o) DE signal
-		.VGA_IF_RGBEN			( 						), // (o) if RGB enable
-		.VGA_BUF_RGB			( 24'hff_ff_ff			)  // (i) buffer RGB
+		.VGA_IF_RGBEN			( w_VGA_IF_RGBEN		), // (o) if RGB enable
+		.VGA_BUF_RGB			( w_VGA_BUF_RGB			)  // (i) buffer RGB
+	);
+
+
+
+	VGA_DISPLAY VGA_DISPLAY_inst(
+		.VGA_CLK				( w_CLK_65M				), // (i) vga clk in
+		.RST_N					( RST_N					), // (i) reset, High Active
+		.VGA_IF_RGBEN			( w_VGA_IF_RGBEN		), // (i) 
+		.VGA_BUF_RGB			( w_VGA_BUF_RGB			)  // (o) out
 	);
 
 

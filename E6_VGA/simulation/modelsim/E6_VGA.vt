@@ -1,0 +1,82 @@
+// Copyright (C) 2018  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "12/20/2019 13:45:20"
+                                                                                
+// Verilog Test Bench template for design : E6_VGA
+// 
+// Simulation tool : ModelSim-Altera (Verilog)
+// 
+
+`timescale 1 ps/ 1 ps
+module E6_VGA_vlg_tst();
+	// constants
+	// general purpose registers
+	// reg eachvec;
+
+	// test vector input registers
+	reg							CLK						;
+	reg							RST_N					;
+	// wires
+	wire						VGA_CLK					;
+	wire						VGA_HSYNC				;
+	wire						VGA_VSYNC				;
+	wire			[ 7:0]		VGA_R					;
+	wire			[ 7:0]		VGA_G					;
+	wire			[ 7:0]		VGA_B					;
+	wire						VGA_SYNC_N				;
+	wire						VGA_BLANK_N				;
+
+	// assign statements (if any)
+	E6_VGA i1 (
+	// port map - connection between master ports and signals/registers
+		.CLK(CLK),
+		.RST_N(RST_N),
+		.VGA_B(VGA_B),
+		.VGA_BLANK_N(VGA_BLANK_N),
+		.VGA_CLK(VGA_CLK),
+		.VGA_G(VGA_G),
+		.VGA_HSYNC(VGA_HSYNC),
+		.VGA_R(VGA_R),
+		.VGA_SYNC_N(VGA_SYNC_N),
+		.VGA_VSYNC(VGA_VSYNC)
+	);
+
+
+	initial
+	begin
+		$display("Running testbench");
+
+		RST_N	<= 1'b1;
+		CLK		<= 1'b0;
+
+		#10000;
+		RST_N	<= 1'b0;
+
+		#10000;
+		RST_N	<= 1'b1;
+	end
+
+
+	always #10000 begin
+		CLK		<=~CLK;
+		// @eachvec;
+	end
+endmodule
+

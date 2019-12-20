@@ -47,15 +47,15 @@ module VGA_TIMING_8b(
 // =============================================================================
 // Defination of parameter
 // =============================================================================
-	parameter					VGA_H_SyncPulse			= 11'd136			; // Horizontal	Sync Pulse		//	= 11'd9;	//	
-	parameter					VGA_H_BackPorch			= 11'd160			; // Horizontal	back porch		//	= 11'd7;	//	
+	parameter					VGA_H_SyncPulse			= 11'd136			; // Horizontal	Sync Pulse		//	= 11'd4;	//	
+	parameter					VGA_H_BackPorch			= 11'd160			; // Horizontal	back porch		//	= 11'd4;	//	
 	parameter					VGA_H_ActiveVideo		= 11'd1024			; // Horizontal	active video	//	= 11'd5;	//	
-	parameter					VGA_H_FrontPorch		= 11'd24			; // Horizontal	front porch		//	= 11'd3;	//	
+	parameter					VGA_H_FrontPorch		= 11'd24			; // Horizontal	front porch		//	= 11'd4;	//	
 
-	parameter					VGA_V_SyncPulse			= 10'd6				; // Vertical	Sync Pulse		//	= 11'd8;	//	
-	parameter					VGA_V_BackPorch			= 10'd29			; // Vertical	back porch		//	= 11'd6;	//	
+	parameter					VGA_V_SyncPulse			= 10'd6				; // Vertical	Sync Pulse		//	= 11'd4;	//	
+	parameter					VGA_V_BackPorch			= 10'd29			; // Vertical	back porch		//	= 11'd4;	//	
 	parameter					VGA_V_ActiveVideo		= 10'd768			; // Vertical	active video	//	= 11'd4;	//	
-	parameter					VGA_V_FrontPorch		= 10'd3				; // Vertical	front porch		//	= 11'd2;	//	
+	parameter					VGA_V_FrontPorch		= 10'd3				; // Vertical	front porch		//	= 11'd4;	//	
 
 
 	parameter					VGA_H_time1				= VGA_H_SyncPulse					; // Horizontal	Sync Pulse
@@ -84,7 +84,7 @@ module VGA_TIMING_8b(
 	reg				[10:0]		r_Hcount				; // H sync pulse count
 	reg				[09:0]		r_Vcount				; // H sync pulse count
 
-	wire						s_if_acitve				; // Active
+	wire						w_if_acitve				; // Active
 
 
 // =============================================================================
@@ -99,9 +99,9 @@ module VGA_TIMING_8b(
 	assign		VGA_B			= r_VGA_B				;
 
 	assign		VGA_SYNC_N		= 1'b0					;
-	assign		VGA_BLANK_N		= 1'b1					;	//VGA_HSYNC & r_VGA_VSYNC	; //
+	assign		VGA_BLANK_N		= VGA_HSYNC & r_VGA_VSYNC	; //1'b1					;	//
 
-	assign		s_if_acitve		= ((VGA_V_time2 < r_Vcount) && (r_Vcount <= VGA_V_time3)) ? 1'b1 : 1'b0;
+	assign		w_if_acitve		= ((VGA_V_time2 < r_Vcount) && (r_Vcount <= VGA_V_time3)) ? 1'b1 : 1'b0;
 
 
 
@@ -180,7 +180,7 @@ module VGA_TIMING_8b(
 				r_VGA_DE		<= 1'b0;
 
 
-				if (s_if_acitve) begin
+				if (w_if_acitve) begin
 					if (r_Hcount < VGA_H_time2 - 11'd3) begin
 						r_VGA_IF_RGBEN	<= 1'b0;
 					end else begin
@@ -200,7 +200,7 @@ module VGA_TIMING_8b(
 
 				r_VGA_HSYNC		<= 1'b1;
 
-				if (s_if_acitve) begin
+				if (w_if_acitve) begin
 					r_VGA_DE		<= 1'b1;
 					if (r_Hcount < VGA_H_time3 - 11'd3) begin
 						r_VGA_IF_RGBEN	<= 1'b1;

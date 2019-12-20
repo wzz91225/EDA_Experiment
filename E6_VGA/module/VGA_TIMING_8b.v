@@ -99,7 +99,7 @@ module VGA_TIMING_8b(
 	assign		VGA_B			= r_VGA_B				;
 
 	assign		VGA_SYNC_N		= 1'b0					;
-	assign		VGA_BLANK_N		= 1'b1					;
+	assign		VGA_BLANK_N		= 1'b1					;	//VGA_HSYNC & r_VGA_VSYNC	; //
 
 	assign		s_if_acitve		= ((VGA_V_time2 < r_Vcount) && (r_Vcount <= VGA_V_time3)) ? 1'b1 : 1'b0;
 

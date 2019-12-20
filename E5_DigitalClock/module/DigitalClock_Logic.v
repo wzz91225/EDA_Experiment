@@ -1,6 +1,6 @@
 module DigitalClock_Logic (
-	input								clk					,	// 1kHz
-	input								clkkey				,
+	input								clk					, // 1kHz
+	// input								clkkey				,
 	input								rst_N				,
 
 	input								alarm				,
@@ -11,8 +11,8 @@ module DigitalClock_Logic (
 	input								remin				,
 	input								rehour				,
 
-	input								key1				, // up		/ pause
-	input								key2				, // down	/ reset
+	input								key1_N				, // up		/ pause
+	input								key2_N				, // down	/ reset
 
 	output				[ 2:0]			DTube_en			,
 	output				[ 2:0]			Twinkle_en			,
@@ -58,15 +58,8 @@ module DigitalClock_Logic (
 	reg									r_alarm_en			;
 
 
-	reg									r_incmin			;
-	reg									r_decmin			;
-	reg									r_inchour			;
-	reg									r_dechour			;
-
-	wire								s_incmin			;
-	wire								s_decmin			;
-	wire								s_inchour			;
-	wire								s_dechour			;
+	wire								s_flag_PressKey1	;
+	wire								s_flag_PressKey2	;
 
 	reg									r_timer_en_sw		;
 	reg									r_timer_rst_sw		;
@@ -84,11 +77,6 @@ module DigitalClock_Logic (
 	reg									r_flag_dechour		;
 
 
-
-	assign		s_incmin				= r_incmin			;
-	assign		s_decmin				= r_decmin			;
-	assign		s_inchour				= r_inchour			;
-	assign		s_dechour				= r_dechour			;
 
 	assign		s_flag_incmin			= r_flag_incmin		;
 	assign		s_flag_decmin			= r_flag_decmin		;
@@ -135,10 +123,10 @@ module DigitalClock_Logic (
 		.softrst_N			( 1'd1					),
 		.enable				( 1'd1					),
 		.mode				( 1'd1					),
-		.flag_incmin		( s_incmin				),
-		.flag_decmin		( s_decmin				),
-		.flag_inchour		( s_inchour				),
-		.flag_dechour		( s_dechour				),
+		.flag_incmin		( s_flag_incmin			),
+		.flag_decmin		( s_flag_decmin			),
+		.flag_inchour		( s_flag_inchour		),
+		.flag_dechour		( s_flag_dechour		),
 		// .ms					( 			),
 		.sec				( s_clkMode_sec			),
 		.min				( s_clkMode_min			),
@@ -170,230 +158,156 @@ module DigitalClock_Logic (
 
 
 
-	reg		r_inchour_1			;
-	reg		r_incmin_1			;
-
-	always @(posedge clkkey or negedge rst_N) begin
-		if (!rst_N) begin
-			r_inchour	<= 1'b0;
-			r_inchour_1	<= 1'b0;
-			r_incmin	<= 1'b0;
-			r_incmin_1	<= 1'b0;
-		end else begin
-			r_inchour_1		<= r_inchour;
-			r_incmin_1		<= r_incmin;
-
-			if (!key1 && s_state == State_0) begin
-				if (rehour) begin
-					r_inchour	<= 1'b1;
-				end else begin
-					r_inchour	<= 1'b0;
-				end
-				
-				if (remin) begin
-					r_incmin	<= 1'b1;
-				end else begin
-					r_incmin	<= 1'b0;
-				end
-			end else begin
-				r_inchour	<= 1'b0;
-				r_incmin	<= 1'b0;
-			end
-		end
-	end
+	KeyRecognition KeyRecognition_inst_0 (
+		.clk				( clk						),
+		.rst_N				( rst_N						),
+		.key_N				( key1_N					),
+		.flag_press			( s_flag_PressKey1			)
+	);
 
 
-	always @(posedge clk or negedge rst_N) begin
-		if (!rst_N) begin
-			r_flag_inchour	<= 1'b0;
-		end else begin
-			if (r_inchour_1 == 1'b0 && r_inchour == 1'b1) begin
-				r_flag_inchour	<= 1'b1;
-			end else begin
-				r_flag_inchour	<= 1'b0;
-			end
-		end
-	end
+	KeyRecognition KeyRecognition_inst_1 (
+		.clk				( clk						),
+		.rst_N				( rst_N						),
+		.key_N				( key2_N					),
+		.flag_press			( s_flag_PressKey2			)
+	);
 
 
 
 	always @(posedge clk or negedge rst_N) begin
 		if (!rst_N) begin
 			r_flag_incmin	<= 1'b0;
-		end else begin
-			if (r_incmin_1 == 1'b0 && r_incmin == 1'b1) begin
-				r_flag_incmin	<= 1'b1;
-			end else begin
-				r_flag_incmin	<= 1'b0;
-			end
-		end
-	end
-
-
-
-	reg		r_dechour_1			;
-	reg		r_decmin_1			;
-
-	always @(posedge clkkey or negedge rst_N) begin
-		if (!rst_N) begin
-			r_dechour	<= 1'b0;
-			r_dechour_1	<= 1'b0;
-			r_decmin	<= 1'b0;
-			r_decmin_1	<= 1'b0;
-		end else begin
-			r_dechour_1		<= r_dechour;
-			r_decmin_1		<= r_decmin;
-
-			if (!key2 && s_state == State_0) begin
-				if (rehour) begin
-					r_dechour	<= 1'b1;
-				end else begin
-					r_dechour	<= 1'b0;
-				end
-				
-				if (remin) begin
-					r_decmin	<= 1'b1;
-				end else begin
-					r_decmin	<= 1'b0;
-				end
-			end else begin
-				r_dechour	<= 1'b0;
-				r_decmin	<= 1'b0;
-			end
-		end
-	end
-
-
-	always @(posedge clk or negedge rst_N) begin
-		if (!rst_N) begin
+			r_flag_inchour	<= 1'b0;
+			r_flag_decmin	<= 1'b0;
 			r_flag_dechour	<= 1'b0;
 		end else begin
-			if (r_dechour_1 == 1'b0 && r_dechour == 1'b1) begin
-				r_flag_dechour	<= 1'b1;
-			end else begin
-				r_flag_dechour	<= 1'b0;
+			if (s_state == State_0)	begin
+				case ({s_flag_PressKey2, s_flag_PressKey1})
+					2'b01:		begin
+						r_flag_inchour	<= rehour;
+						r_flag_incmin	<= remin;
+						r_flag_decmin	<= 1'b0;
+						r_flag_dechour	<= 1'b0;
+					end
+
+					2'b10:		begin
+						r_flag_incmin	<= 1'b0;
+						r_flag_inchour	<= 1'b0;
+						r_flag_dechour	<= rehour;
+						r_flag_decmin	<= remin;
+					end
+
+					default:	begin
+						r_flag_incmin	<= 1'b0;
+						r_flag_inchour	<= 1'b0;
+						r_flag_decmin	<= 1'b0;
+						r_flag_dechour	<= 1'b0;
+					end
+				endcase
 			end
 		end
 	end
+
 
 
 	always @(posedge clk or negedge rst_N) begin
 		if (!rst_N) begin
-			r_flag_decmin	<= 1'b0;
-		end else begin
-			if (r_decmin_1 == 1'b0 && r_decmin == 1'b1) begin
-				r_flag_decmin	<= 1'b1;
-			end else begin
-				r_flag_decmin	<= 1'b0;
-			end
-		end
-	end
-
-
-
-	always @(posedge clkkey or negedge rst_N) begin
-		if (!rst_N) begin
-			r_timer_en_sw	<= 1'b0;
-		end else begin
-			if (!key1 && s_state == State_2) begin
-				r_timer_en_sw	<=~r_timer_en_sw;
-			end else begin
-				r_timer_en_sw	<= r_timer_en_sw;
-			end
-		end
-	end
-
-
-	always @(posedge clkkey or negedge rst_N) begin
-		if (!rst_N) begin
-			r_timer_rst_sw	<= 1'b0;
-		end else begin
-			if (!key2 && s_state == State_2) begin
-				r_timer_rst_sw	<= 1'b0;
-			end else begin
-				r_timer_rst_sw	<= 1'b1;
-			end
-		end
-	end
-
-
-
-	always @(posedge clkkey or negedge rst_N) begin
-		if (!rst_N) begin
 			r_alarm_hour	<= 5'd0;
-			r_alarm_min		<= 5'd0;
+			r_alarm_min		<= 6'd0;
 		end else begin
-			if (!key1)begin
-				if (key2 && s_state == State_1) begin
-					if (rehour) begin
-						if (r_alarm_hour < 5'd23) begin
-							r_alarm_hour	<= r_alarm_hour + 5'd1;
-						end else begin
-							r_alarm_hour	<= 5'd0;
+			if (s_state == State_1)	begin
+				case ({s_flag_PressKey2, s_flag_PressKey1})
+					2'b01:		begin
+						if (rehour) begin
+							if (r_alarm_hour < 5'd23) begin
+								r_alarm_hour	<= r_alarm_hour + 5'd1;
+							end else begin
+								r_alarm_hour	<= 5'd0;
+							end
 						end
-					end else begin
-						r_alarm_hour	<= r_alarm_hour;
-					end
-					
-					if (remin) begin
-						if (r_alarm_min < 6'd59) begin
-							r_alarm_min		<= r_alarm_min + 6'd1;
-						end else begin
-							r_alarm_min		<= 6'd0;
 
-							if (!rehour) begin
-								if (r_alarm_hour < 5'd23) begin
-									r_alarm_hour	<= r_alarm_hour + 5'd1;
-								end else begin
-									r_alarm_hour	<= 5'd0;
+						if (remin) begin
+							if (r_alarm_min < 6'd59) begin
+								r_alarm_min		<= r_alarm_min + 6'd1;
+							end else begin
+								r_alarm_min		<= 6'd0;
+
+								if (!rehour) begin
+									if (r_alarm_hour < 5'd23) begin
+										r_alarm_hour	<= r_alarm_hour + 5'd1;
+									end else begin
+										r_alarm_hour	<= 5'd0;
+									end
 								end
 							end
 						end
-					end else begin
-						r_alarm_min	<= r_alarm_min;
 					end
 
-				end else begin
-					r_alarm_hour	<= r_alarm_hour;
-					r_alarm_min		<= r_alarm_min;
-				end
-			end
-
-
-			if (!key2) begin
-				if (key1 && s_state == State_1) begin
-					if (rehour) begin
-						if (r_alarm_hour > 5'd0) begin
-							r_alarm_hour	<= r_alarm_hour - 5'd1;
-						end else begin
-							r_alarm_hour	<= 5'd23;
+					2'b10:		begin
+						if (rehour) begin
+							if (r_alarm_hour > 5'd0) begin
+								r_alarm_hour	<= r_alarm_hour - 5'd1;
+							end else begin
+								r_alarm_hour	<= 5'd23;
+							end
 						end
-					end else begin
-						r_alarm_hour	<= r_alarm_hour;
-					end
-					
-					if (remin) begin
-						if (r_alarm_min > 6'd0) begin
-							r_alarm_min		<= r_alarm_min - 6'd1;
-						end else begin
-							r_alarm_min		<= 6'd59;
 
-							if (!rehour) begin
-								if (r_alarm_hour > 5'd0) begin
-									r_alarm_hour	<= r_alarm_hour - 5'd1;
-								end else begin
-									r_alarm_hour	<= 5'd23;
+						if (remin) begin
+							if (r_alarm_min > 6'd0) begin
+								r_alarm_min		<= r_alarm_min - 6'd1;
+							end else begin
+								r_alarm_min		<= 6'd59;
+
+								if (!rehour) begin
+									if (r_alarm_hour > 5'd0) begin
+										r_alarm_hour	<= r_alarm_hour - 5'd1;
+									end else begin
+										r_alarm_hour	<= 5'd23;
+									end
 								end
 							end
 						end
-					end else begin
+					end
+
+					default:	begin
+						r_alarm_hour	<= r_alarm_hour;
 						r_alarm_min		<= r_alarm_min;
 					end
+				endcase
+			end
+		end
+	end
 
-				end else begin
-					r_alarm_hour	<= r_alarm_hour;
-					r_alarm_min		<= r_alarm_min;
-				end
+
+
+	always @(posedge clk or negedge rst_N) begin
+		if (!rst_N) begin
+			r_timer_en_sw	<= 1'd0;
+			r_timer_rst_sw	<= 1'd0;
+		end else begin
+			if (s_state == State_2)	begin
+				case ({s_flag_PressKey2, s_flag_PressKey1})
+					2'b01:		begin
+						r_timer_en_sw	<=~r_timer_en_sw;
+						r_timer_rst_sw	<= 1'd1;
+					end
+
+					2'b10:		begin
+						r_timer_en_sw	<= 1'd0;
+						r_timer_rst_sw	<= 1'd0;
+					end
+
+					2'b11:		begin
+						r_timer_en_sw	<=~r_timer_en_sw;
+						r_timer_rst_sw	<= 1'd0;
+					end
+
+					default:	begin
+						r_timer_en_sw	<= r_timer_en_sw;
+						r_timer_rst_sw	<= 1'd1;
+					end
+				endcase
 			end
 		end
 	end

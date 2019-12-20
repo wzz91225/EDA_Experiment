@@ -9,8 +9,8 @@ module E5_DigitalClock (
 	input								remin				,
 	input								rehour				,
 
-	input								key1				, // up		/ pause
-	input								key2				, // down	/ reset
+	input								key1_N				, // up		/ pause
+	input								key2_N				, // down	/ reset
 
 	input				[ 1:0]			fast				,
 
@@ -21,7 +21,7 @@ module E5_DigitalClock (
 );
 
 	wire								s_clk_1kHz			;
-	wire								s_clk_key			;
+	// wire								s_clk_key			;
 
 	wire				[ 2:0]			s_DTube_en			;
 	wire				[ 2:0]			s_Twinkle_en		;
@@ -34,7 +34,7 @@ module E5_DigitalClock (
 		.rst_N				( rst_N					),
 		.fast				( fast					),
 		.clkout				( s_clk_1kHz			),
-		.clkkey				( s_clk_key				)
+		// .clkkey				( s_clk_key				)
 	);
 
 
@@ -50,15 +50,15 @@ module E5_DigitalClock (
 
 	DigitalClock_Logic DigitalClock_Logic_inst (
 		.clk				( s_clk_1kHz			),
-		.clkkey				( s_clk_key				),
+		// .clkkey				( s_clk_key				),
 		.rst_N				( rst_N					),
 		.alarm				( k						),
 		.alarm_en			( k1					),
 		.stopwatch			( k2					),
 		.remin				( remin					),
 		.rehour				( rehour				),
-		.key1				( key1					),
-		.key2				( key2					),
+		.key1_N				( key1_N				),
+		.key2_N				( key2_N				),
 		.DTube_en			( s_DTube_en			),
 		.Twinkle_en			( s_Twinkle_en			),
 		.number_BCD			( s_number_BCD			),

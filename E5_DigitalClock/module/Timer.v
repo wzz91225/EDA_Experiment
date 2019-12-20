@@ -47,7 +47,7 @@ module Timer (
 	assign		num_2_BCD				= r_num_2_BCD		;
 
 
-	always @(posedge clk or negedge rst_N or negedge softrst_N) //  or posedge flag_incmin or posedge flag_decmin or posedge flag_inchour or posedge flag_dechour
+	always @(posedge clk or negedge rst_N or negedge softrst_N)
 	begin
 		if (!rst_N || !softrst_N) begin
 			r_ms	<= 10'd0;

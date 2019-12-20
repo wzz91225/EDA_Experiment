@@ -2,9 +2,9 @@
 !.gitignore
 !/E[0-9]_*/
 !/*/module
-!/*.v
+!*.v
 !/*/ip
 !/*/ip/*
 !/*/simulation
 !/*/simulation/modelsim
-!/*/simulation/modelsim/*.vt
+!*.vt

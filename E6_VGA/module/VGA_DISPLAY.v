@@ -29,8 +29,11 @@
 module VGA_DISPLAY(
 	input						VGA_CLK					, // (i) vga clk in
 	input						RST_N					, // (i) reset, High Active
-	input						VGA_IF_RGBEN			, // (i) 
+	input						VGA_IF_RGBEN			, // (i)
+
+	input			[ 5:0]		NUMBER_ENABLE			, // (i) 
 	input			[23:0]		NUMBER_BCD				, // (i)
+
 	output			[23:0]		VGA_BUF_RGB				  // (o) out
 );
 
@@ -181,7 +184,7 @@ module VGA_DISPLAY(
 	VGA_DISPLAY_NUM VGA_DISPLAY_NUM_inst_0 (
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
-		.ENABLE					( 1'b1					), // (i) 
+		.ENABLE					( NUMBER_ENABLE[0]		), // (i) 
 		.VGA_IF_RGBEN_1			(  w_VGA_IF_RGBEN_1		), // (i) 
 		.POSITION_X				( 11'd560				), // (i) 
 		.POSITION_Y				( 11'd368				), // (i) 
@@ -197,7 +200,7 @@ module VGA_DISPLAY(
 	VGA_DISPLAY_NUM VGA_DISPLAY_NUM_inst_1 (
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
-		.ENABLE					( 1'b1					), // (i) 
+		.ENABLE					( NUMBER_ENABLE[1]		), // (i) 
 		.VGA_IF_RGBEN_1			(  w_VGA_IF_RGBEN_1		), // (i) 
 		.POSITION_X				( 11'd544				), // (i) 
 		.POSITION_Y				( 11'd368				), // (i) 
@@ -213,7 +216,7 @@ module VGA_DISPLAY(
 	VGA_DISPLAY_NUM VGA_DISPLAY_NUM_inst_2 (
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
-		.ENABLE					( 1'b1					), // (i) 
+		.ENABLE					( NUMBER_ENABLE[2]		), // (i) 
 		.VGA_IF_RGBEN_1			(  w_VGA_IF_RGBEN_1		), // (i) 
 		.POSITION_X				( 11'd512				), // (i) 
 		.POSITION_Y				( 11'd368				), // (i) 
@@ -229,7 +232,7 @@ module VGA_DISPLAY(
 	VGA_DISPLAY_NUM VGA_DISPLAY_NUM_inst_3 (
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
-		.ENABLE					( 1'b1					), // (i) 
+		.ENABLE					( NUMBER_ENABLE[3]		), // (i) 
 		.VGA_IF_RGBEN_1			(  w_VGA_IF_RGBEN_1		), // (i) 
 		.POSITION_X				( 11'd496				), // (i) 
 		.POSITION_Y				( 11'd368				), // (i) 
@@ -245,7 +248,7 @@ module VGA_DISPLAY(
 	VGA_DISPLAY_NUM VGA_DISPLAY_NUM_inst_4 (
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
-		.ENABLE					( 1'b1					), // (i) 
+		.ENABLE					( NUMBER_ENABLE[4]		), // (i) 
 		.VGA_IF_RGBEN_1			(  w_VGA_IF_RGBEN_1		), // (i) 
 		.POSITION_X				( 11'd464				), // (i) 
 		.POSITION_Y				( 11'd368				), // (i) 
@@ -261,7 +264,7 @@ module VGA_DISPLAY(
 	VGA_DISPLAY_NUM VGA_DISPLAY_NUM_inst_5 (
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
-		.ENABLE					( 1'b1					), // (i) 
+		.ENABLE					( NUMBER_ENABLE[5]		), // (i) 
 		.VGA_IF_RGBEN_1			(  w_VGA_IF_RGBEN_1		), // (i) 
 		.POSITION_X				( 11'd448				), // (i) 
 		.POSITION_Y				( 11'd368				), // (i) 

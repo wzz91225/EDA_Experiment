@@ -37,14 +37,15 @@ module E6_VGA (
 	wire						w_CLK_200M				;
 	wire						w_CLK_65M				;
 
+	wire						w_CLK_1K				;
 
 
-	wire						s_clk_1kHz			;
-	// wire						s_clk_key			;
+	wire			[ 2:0]		w_DTube_en				;
+	wire			[ 2:0]		w_Twinkle_en			;
+	wire			[23:0]		w_number_BCD			;
 
-	wire			[ 2:0]		s_DTube_en			;
-	wire			[ 2:0]		s_Twinkle_en		;
-	wire			[23:0]		s_number_BCD		;
+	wire						w_HOURLY				;
+	wire						w_ALARM					;
 
 
 
@@ -69,18 +70,21 @@ module E6_VGA (
 		.clkin					( CLK					),
 		.rst_N					( RST_N					),
 		.fast					( fast					),
-		.clkout					( s_clk_1kHz			),
-		// .clkkey					( s_clk_key				)
+		.clkout					( w_CLK_1K				)
 	);
 
 
 	DigitalClock_Drive DigitalClock_Drive_inst (
 		.clk					( CLK					),
 		.rst_N					( RST_N					),
-		.DTube_en				( s_DTube_en			),
-		.Twinkle_en				( s_Twinkle_en			),
-		.number_BCD				( s_number_BCD			),
+		.DTube_en				( w_DTube_en			),
+		.Twinkle_en				( w_Twinkle_en			),
+		.number_BCD				( w_number_BCD			),
+		.HOURLY					( w_HOURLY				),
+		.ALARM					( w_ALARM				),
 		.Dtube_out				( DigitalTube_out		),
+		.LED_hourly				( LED_hourly			),
+		.LED_alarm				( LED_alarm				),
 		.VGA_CLK_IN				( w_CLK_65M				),
 		.VGA_CLK_OUT			( VGA_CLK				),
 		.VGA_HSYNC				( VGA_HSYNC				),
@@ -94,8 +98,7 @@ module E6_VGA (
 
 
 	DigitalClock_Logic DigitalClock_Logic_inst (
-		.clk					( s_clk_1kHz			),
-		// .clkkey					( s_clk_key				),
+		.clk					( w_CLK_1K				),
 		.rst_N					( RST_N					),
 		.alarm					( k						),
 		.alarm_en				( k1					),
@@ -104,11 +107,11 @@ module E6_VGA (
 		.rehour					( rehour				),
 		.key1_N					( key1_N				),
 		.key2_N					( key2_N				),
-		.DTube_en				( s_DTube_en			),
-		.Twinkle_en				( s_Twinkle_en			),
-		.number_BCD				( s_number_BCD			),
-		.LED_hourly				( LED_hourly			),
-		.LED_alarm				( LED_alarm				)
+		.DTube_en				( w_DTube_en			),
+		.Twinkle_en				( w_Twinkle_en			),
+		.number_BCD				( w_number_BCD			),
+		.LED_hourly				( w_HOURLY				),
+		.LED_alarm				( w_ALARM				)
 	);
 
 

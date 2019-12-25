@@ -33,6 +33,9 @@ module VGA_DISPLAY(
 
 	input			[ 5:0]		NUMBER_ENABLE			, // (i) 
 	input			[23:0]		NUMBER_BCD				, // (i)
+	
+	input						HOURLY					, // (i)
+	input						ALARM					, // (i)
 
 	output			[23:0]		VGA_BUF_RGB				  // (o) out
 );
@@ -61,13 +64,15 @@ module VGA_DISPLAY(
 	wire			[23:0]		w_VGA_BUF_RGB_BACK		;
 
 
-	wire						w_DISPLAY_COVER_TXT_0	;
-	wire						w_DISPLAY_COVER_TXT_1_0	;
-	wire						w_DISPLAY_COVER_TXT_1_1	;
+	wire						w_DISPLAY_COVER_IMG_0_0	;
+	wire						w_DISPLAY_COVER_IMG_0_1	;
+	wire						w_DISPLAY_COVER_IMG_1	;
+	wire						w_DISPLAY_COVER_IMG_2	;
 
-	wire			[23:0]		w_VGA_BUF_RGB_TXT_0		;
-	wire			[23:0]		w_VGA_BUF_RGB_TXT_1_0	;
-	wire			[23:0]		w_VGA_BUF_RGB_TXT_1_1	;
+	wire			[23:0]		w_VGA_BUF_RGB_IMG_0_0	;
+	wire			[23:0]		w_VGA_BUF_RGB_IMG_0_1	;
+	wire			[23:0]		w_VGA_BUF_RGB_IMG_1		;
+	wire			[23:0]		w_VGA_BUF_RGB_IMG_2		;
 
 
 	wire						w_DISPLAY_COVER_NUM_0	;
@@ -98,10 +103,11 @@ module VGA_DISPLAY(
 														: ((w_DISPLAY_COVER_NUM_3) ? (w_VGA_BUF_RGB_NUM_3) 
 														: ((w_DISPLAY_COVER_NUM_4) ? (w_VGA_BUF_RGB_NUM_4) 
 														: ((w_DISPLAY_COVER_NUM_5) ? (w_VGA_BUF_RGB_NUM_5) 
-														: ((w_DISPLAY_COVER_TXT_0) ? (w_VGA_BUF_RGB_TXT_0)
-														: ((w_DISPLAY_COVER_TXT_1_0) ? (w_VGA_BUF_RGB_TXT_1_0)
-														: ((w_DISPLAY_COVER_TXT_1_1) ? (w_VGA_BUF_RGB_TXT_1_1)
-														: (w_VGA_BUF_RGB_BACK) )))))))));
+														: ((w_DISPLAY_COVER_IMG_0_0) ? (w_VGA_BUF_RGB_IMG_0_0)
+														: ((w_DISPLAY_COVER_IMG_0_1) ? (w_VGA_BUF_RGB_IMG_0_1)
+														: ((w_DISPLAY_COVER_IMG_1) ? (w_VGA_BUF_RGB_IMG_1)
+														: ((w_DISPLAY_COVER_IMG_2) ? (w_VGA_BUF_RGB_IMG_2)
+														: (w_VGA_BUF_RGB_BACK) ))))))))));
 
 
 	assign						w_VGA_BUF_RGB_0			= 24'hff_ff_ff		;
@@ -121,62 +127,66 @@ module VGA_DISPLAY(
 
 
 
-	VGA_DISPLAY_TXT_0 VGA_DISPLAY_TXT_0_inst_0 (
+	VGA_DISPLAY_IMG_0 VGA_DISPLAY_IMG_0_inst_0 (
 		.VGA_CLK				( VGA_CLK					), // (i) vga clk in
 		.RST_N					( RST_N						), // (i) reset, High Active
 		.ENABLE					( 1'b1						), // (o)
 		.VGA_IF_RGBEN_1			( w_VGA_IF_RGBEN_1			), // (i) 
-		.POSITION_X				( 11'd480					), // (i) 
+		.POSITION_X				( 11'd608					), // (i) 
 		.POSITION_Y				( 11'd368					), // (i) 
 		.CURRENT_X				( w_X						), // (i)
 		.CURRENT_Y				( w_Y						), // (i)
-		.COVER					( w_DISPLAY_COVER_TXT_1_0	), // (o)
-		.VGA_BUF_RGB			( w_VGA_BUF_RGB_TXT_1_0		)  // (o) 
+		.COVER					( w_DISPLAY_COVER_IMG_0_0	), // (o)
+		.VGA_BUF_RGB			( w_VGA_BUF_RGB_IMG_0_0		)  // (o) 
 	);
 
 
 
-	VGA_DISPLAY_TXT_0 VGA_DISPLAY_TXT_0_inst_1 (
+	VGA_DISPLAY_IMG_0 VGA_DISPLAY_IMG_0_inst_1 (
 		.VGA_CLK				( VGA_CLK					), // (i) vga clk in
 		.RST_N					( RST_N						), // (i) reset, High Active
 		.ENABLE					( 1'b1						), // (o)
 		.VGA_IF_RGBEN_1			( w_VGA_IF_RGBEN_1			), // (i) 
-		.POSITION_X				( 11'd528					), // (i) 
+		.POSITION_X				( 11'd656					), // (i) 
 		.POSITION_Y				( 11'd368					), // (i) 
 		.CURRENT_X				( w_X						), // (i)
 		.CURRENT_Y				( w_Y						), // (i)
-		.COVER					( w_DISPLAY_COVER_TXT_1_1	), // (o)
-		.VGA_BUF_RGB			( w_VGA_BUF_RGB_TXT_1_1		)  // (o) 
+		.COVER					( w_DISPLAY_COVER_IMG_0_1	), // (o)
+		.VGA_BUF_RGB			( w_VGA_BUF_RGB_IMG_0_1		)  // (o) 
 	);
 
 
 
-	VGA_DISPLAY_TXT_1 VGA_DISPLAY_TXT_1_inst (
+	VGA_DISPLAY_IMG_1 VGA_DISPLAY_IMG_1_inst (
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
 		.ENABLE					( 1'b1					), // (o)
 		.VGA_IF_RGBEN_1			( w_VGA_IF_RGBEN_1		), // (i) 
-		.POSITION_X				( 11'd200				), // (i) 
-		.POSITION_Y				( 11'd100				), // (i) 
+		.POSITION_X				( 11'd560				), // (i) 
+		.POSITION_Y				( 11'd304				), // (i) 
 		.CURRENT_X				( w_X					), // (i)
 		.CURRENT_Y				( w_Y					), // (i)
-		.COVER					( w_DISPLAY_COVER_TXT_0	), // (o)
-		.VGA_BUF_RGB			( w_VGA_BUF_RGB_TXT_0	)  // (o) 
+		.HOURLY					( HOURLY				), // (i)
+		.BUF_RGB_BACKGROUND		( w_VGA_BUF_RGB_BACK	), // (i)
+		.COVER					( w_DISPLAY_COVER_IMG_1	), // (o)
+		.VGA_BUF_RGB			( w_VGA_BUF_RGB_IMG_1	)  // (o) 
 	);
 
 
 
-	VGA_DISPLAY_TXT_2 VGA_DISPLAY_TXT_2_inst (
+	VGA_DISPLAY_IMG_2 VGA_DISPLAY_IMG_2_inst (
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
 		.ENABLE					( 1'b1					), // (o)
 		.VGA_IF_RGBEN_1			( w_VGA_IF_RGBEN_1		), // (i) 
-		.POSITION_X				( 11'd200				), // (i) 
-		.POSITION_Y				( 11'd148				), // (i) 
+		.POSITION_X				( 11'd656				), // (i) 
+		.POSITION_Y				( 11'd304				), // (i) 
 		.CURRENT_X				( w_X					), // (i)
 		.CURRENT_Y				( w_Y					), // (i)
-		.COVER					( w_DISPLAY_COVER_TXT_2	), // (o)
-		.VGA_BUF_RGB			( w_VGA_BUF_RGB_TXT_2	)  // (o) 
+		.ALARM					( ALARM					), // (i)
+		.BUF_RGB_BACKGROUND		( w_VGA_BUF_RGB_BACK	), // (i)
+		.COVER					( w_DISPLAY_COVER_IMG_2	), // (o)
+		.VGA_BUF_RGB			( w_VGA_BUF_RGB_IMG_2	)  // (o) 
 	);
 
 
@@ -185,8 +195,8 @@ module VGA_DISPLAY(
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
 		.ENABLE					( NUMBER_ENABLE[0]		), // (i) 
-		.VGA_IF_RGBEN_1			(  w_VGA_IF_RGBEN_1		), // (i) 
-		.POSITION_X				( 11'd560				), // (i) 
+		.VGA_IF_RGBEN_1			( w_VGA_IF_RGBEN_1		), // (i) 
+		.POSITION_X				( 11'd688				), // (i) 
 		.POSITION_Y				( 11'd368				), // (i) 
 		.CURRENT_X				( w_X					), // (i) 
 		.CURRENT_Y				( w_Y					), // (i) 
@@ -201,8 +211,8 @@ module VGA_DISPLAY(
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
 		.ENABLE					( NUMBER_ENABLE[1]		), // (i) 
-		.VGA_IF_RGBEN_1			(  w_VGA_IF_RGBEN_1		), // (i) 
-		.POSITION_X				( 11'd544				), // (i) 
+		.VGA_IF_RGBEN_1			( w_VGA_IF_RGBEN_1		), // (i) 
+		.POSITION_X				( 11'd672				), // (i) 
 		.POSITION_Y				( 11'd368				), // (i) 
 		.CURRENT_X				( w_X					), // (i) 
 		.CURRENT_Y				( w_Y					), // (i) 
@@ -217,8 +227,8 @@ module VGA_DISPLAY(
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
 		.ENABLE					( NUMBER_ENABLE[2]		), // (i) 
-		.VGA_IF_RGBEN_1			(  w_VGA_IF_RGBEN_1		), // (i) 
-		.POSITION_X				( 11'd512				), // (i) 
+		.VGA_IF_RGBEN_1			( w_VGA_IF_RGBEN_1		), // (i) 
+		.POSITION_X				( 11'd640				), // (i) 
 		.POSITION_Y				( 11'd368				), // (i) 
 		.CURRENT_X				( w_X					), // (i) 
 		.CURRENT_Y				( w_Y					), // (i) 
@@ -233,8 +243,8 @@ module VGA_DISPLAY(
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
 		.ENABLE					( NUMBER_ENABLE[3]		), // (i) 
-		.VGA_IF_RGBEN_1			(  w_VGA_IF_RGBEN_1		), // (i) 
-		.POSITION_X				( 11'd496				), // (i) 
+		.VGA_IF_RGBEN_1			( w_VGA_IF_RGBEN_1		), // (i) 
+		.POSITION_X				( 11'd624				), // (i) 
 		.POSITION_Y				( 11'd368				), // (i) 
 		.CURRENT_X				( w_X					), // (i) 
 		.CURRENT_Y				( w_Y					), // (i) 
@@ -249,8 +259,8 @@ module VGA_DISPLAY(
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
 		.ENABLE					( NUMBER_ENABLE[4]		), // (i) 
-		.VGA_IF_RGBEN_1			(  w_VGA_IF_RGBEN_1		), // (i) 
-		.POSITION_X				( 11'd464				), // (i) 
+		.VGA_IF_RGBEN_1			( w_VGA_IF_RGBEN_1		), // (i) 
+		.POSITION_X				( 11'd592				), // (i) 
 		.POSITION_Y				( 11'd368				), // (i) 
 		.CURRENT_X				( w_X					), // (i) 
 		.CURRENT_Y				( w_Y					), // (i) 
@@ -265,8 +275,8 @@ module VGA_DISPLAY(
 		.VGA_CLK				( VGA_CLK				), // (i) vga clk in
 		.RST_N					( RST_N					), // (i) reset, High Active
 		.ENABLE					( NUMBER_ENABLE[5]		), // (i) 
-		.VGA_IF_RGBEN_1			(  w_VGA_IF_RGBEN_1		), // (i) 
-		.POSITION_X				( 11'd448				), // (i) 
+		.VGA_IF_RGBEN_1			( w_VGA_IF_RGBEN_1		), // (i) 
+		.POSITION_X				( 11'd576				), // (i) 
 		.POSITION_Y				( 11'd368				), // (i) 
 		.CURRENT_X				( w_X					), // (i) 
 		.CURRENT_Y				( w_Y					), // (i) 

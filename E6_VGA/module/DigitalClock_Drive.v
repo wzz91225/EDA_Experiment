@@ -85,6 +85,8 @@ module DigitalClock_Drive (
 		.VGA_IF_RGBEN			( w_VGA_IF_RGBEN		), // (i) 
 		.NUMBER_BCD				( number_BCD			), // (i)
 		.NUMBER_ENABLE			( w_enable				), // (i)
+		.HOURLY					( HOURLY				), // (i)
+		.ALARM					( ALARM					), // (i)
 		.VGA_BUF_RGB			( w_VGA_BUF_RGB			)  // (o) out
 	);
 

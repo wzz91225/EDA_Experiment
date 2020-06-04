@@ -9,3 +9,6 @@
 !/*/simulation/modelsim
 !*.vt
 !pin.txt
+
+!EDA_ExperimentReport.pdf
+!README.md

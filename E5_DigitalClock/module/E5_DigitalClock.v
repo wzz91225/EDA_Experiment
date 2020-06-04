@@ -33,7 +33,7 @@ module E5_DigitalClock (
 		.clkin				( clk					),
 		.rst_N				( rst_N					),
 		.fast				( fast					),
-		.clkout				( s_clk_1kHz			),
+		.clkout				( s_clk_1kHz			)
 		// .clkkey				( s_clk_key				)
 	);
 

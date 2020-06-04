@@ -20,8 +20,10 @@ module E3_Sequence (
 
 
 	wire		[15:0]			sequence_generator								;
+	wire		[ 4:0]			sequence_compare								;
 
 	assign						sequence_generator	= 16'b0111_0100_1101_1010	;
+	assign						sequence_compare	= 5'b11010					;
 
 
 	ClockDivider ClockDivider_inst (
@@ -44,6 +46,7 @@ module E3_Sequence (
 		.clk				( s_clk_1Hz_N			),
 		.rst_n				( rst_n					),
 		.seq_in				( s_data				),
+		.seq_compare		( sequence_compare		),
 		.LED_seq_in			( LED_seq_in			),
 		.LED_seq_equal		( LED_seq_equal			)		
 	);

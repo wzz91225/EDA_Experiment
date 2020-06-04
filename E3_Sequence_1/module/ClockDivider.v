@@ -11,7 +11,7 @@ output			reg		clkout_N		= 1;
 
 reg			[25:0]		count			= 25'b0;
 
-parameter				DivideNum		= 25'd1;//25'd25000000;
+parameter				DivideNum		= 25'd25000000;
 
 
 always @(posedge clkin) begin

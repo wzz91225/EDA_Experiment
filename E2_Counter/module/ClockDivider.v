@@ -9,7 +9,7 @@ output  reg	clkout	= 0;
 
 reg     [25:0]  count   = 25'b0;
 
-parameter  DivideNum    = 25'd5;
+parameter  DivideNum    = 25'd0;
 
 
 always @(posedge clkin)

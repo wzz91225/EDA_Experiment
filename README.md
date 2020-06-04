@@ -2,7 +2,7 @@
 - Project Name: EDA Experiment  
 - Project Nature: Learning  
 - Software Platform: Quartus Prime 18.1  
-- Hardware Platform: Altera DE1-SoC
+- Hardware Platform: Terasic Altera DE1-SoC
 - FPGA Device: Cyclone V SoC 5CSXFC6D6F31C6N
 - Processor: ARM Cortex-A9 Dual-Core
 - File Content: "EN_XXX" => "Experiment N - XXX"; Experimental details in "EDA_ExprimentReport.pdf"

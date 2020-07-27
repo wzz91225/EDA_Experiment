@@ -1,4 +1,5 @@
 # INTRODUCTION
+- Tips: CODE ONLY!!!
 - Project Name: EDA Experiment  
 - Project Purpose: Learning  
 - Software Platform: Quartus Prime 18.1  
